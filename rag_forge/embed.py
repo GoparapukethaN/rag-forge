@@ -1,7 +1,7 @@
-"""Embedding functions. Three options, hardcoded — no plugin nonsense.
+"""Embedding functions.
 
-BGE-small and E5-small run locally (no API key needed).
-OpenAI needs OPENAI_API_KEY in env.
+BGE-small and E5-small run locally after the first model download. OpenAI needs
+OPENAI_API_KEY in the environment.
 """
 
 from __future__ import annotations
@@ -30,8 +30,7 @@ def _get_st_model(model_name: str):
 def bge_embed(texts: list[str]) -> np.ndarray:
     """Embed with BAAI/bge-small-en-v1.5 (local, 384-dim).
 
-    Small but punches above its weight. I used bge-large at Observe.AI but
-    for benchmarking the small variant is fast enough and the ranking is similar.
+    The small variant keeps the local benchmark easier to run.
     """
     model = _get_st_model("BAAI/bge-small-en-v1.5")
     # BGE models want "Represent this sentence:" prefix for retrieval

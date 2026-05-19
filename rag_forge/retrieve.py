@@ -59,8 +59,8 @@ def hybrid_search(
 ) -> list[tuple[int, float]]:
     """Weighted combination of dense + BM25 scores.
 
-    The 0.7/0.3 split worked best in my testing at Observe.AI. Dense handles
-    semantic similarity, BM25 catches exact keyword matches that embeddings miss.
+    Dense retrieval handles semantic similarity, while BM25 catches exact keyword
+    matches that embeddings can miss. The dense weight is configurable for experiments.
     """
     dense_results = dense_search(query_embedding, corpus_embeddings, top_k=len(corpus_texts))
     bm25_results = bm25_search(query, corpus_texts, top_k=len(corpus_texts))

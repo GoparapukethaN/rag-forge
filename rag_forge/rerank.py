@@ -1,8 +1,7 @@
-"""Reranking: cross-encoder or nothing.
+"""Reranking: cross-encoder or passthrough.
 
-Cross-encoder reranking is the single biggest accuracy boost you can add to a
-RAG pipeline. At Observe.AI it took us from ~72% to ~84% relevance on our
-internal eval set. The tradeoff is latency — about 50-100ms per query.
+Cross-encoder reranking can improve retrieval quality, but the tradeoff is additional
+latency per query.
 """
 
 from __future__ import annotations
@@ -18,8 +17,7 @@ def cross_encoder_rerank(
 ) -> list[tuple[int, float]]:
     """Rerank retrieved chunks using a cross-encoder model.
 
-    Uses ms-marco-MiniLM-L-6-v2 — small, fast, and good enough. The larger
-    models give maybe 1-2% better ranking but 3x the latency.
+    Uses ms-marco-MiniLM-L-6-v2 as a small local reranking baseline.
     """
     global _reranker_model
 
