@@ -68,13 +68,21 @@ makes the benchmark retrieval-focused; it does not score generated responses.
 ```bash
 python -m venv .venv
 . .venv/bin/activate
-pip install -e . --no-deps
-pip install pytest ruff numpy rank-bm25 typer rich pandas matplotlib
-pytest tests -q
-ruff check rag_forge tests
+pip install -e ".[dev]"
+make verify
 ```
 
 Current local verification: `28 passed` and `ruff` clean.
+
+For the included keyless sample benchmark:
+
+```bash
+PYTHON=.venv/bin/python ./scripts/run-sample-benchmark.sh /tmp/rag-forge-sample-smoke
+```
+
+Latest sample smoke result: 24 configurations tested, best hit rate `0.650`, best MRR
+`0.600`. See [docs/sample-benchmark.md](docs/sample-benchmark.md) for the exact command,
+scope, and top configurations.
 
 ## How It Works
 
