@@ -25,6 +25,8 @@ The sample is intentionally small, so the numbers are a smoke-test artifact rath
 a universal benchmark. The full run details are in
 [docs/sample-benchmark.md](docs/sample-benchmark.md), and the matching gate artifact is
 in [docs/sample-regression-gate.md](docs/sample-regression-gate.md).
+The engineering story and tradeoffs are written up in
+[docs/case-study.md](docs/case-study.md).
 
 ## What It Does
 
