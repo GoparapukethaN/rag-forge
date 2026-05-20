@@ -6,6 +6,24 @@ chunking strategy, embedding model, retrieval method, and optional reranking.
 The goal is simple: make RAG configuration changes measurable instead of guessing from a
 few manual questions.
 
+## Sample Result
+
+The included keyless smoke benchmark runs 24 retrieval configurations over a small
+MLOps/RAG document set. In the latest local run, recursive chunking with local BGE
+embeddings and dense retrieval was the best default candidate for this corpus.
+
+| Candidate | Hit Rate | MRR | Local Latency |
+|---|---:|---:|---:|
+| `recursive_512|bge-small|dense|none` | 0.650 | 0.600 | 11ms |
+| `recursive_512|e5-small|dense|none` | 0.650 | 0.600 | 12ms |
+| `recursive_512|bge-small|hybrid|none` | 0.650 | 0.592 | 11ms |
+
+![Sample Pareto plot](docs/assets/sample-pareto.png)
+
+The sample is intentionally small, so the numbers are a smoke-test artifact rather than
+a universal benchmark. The full run details are in
+[docs/sample-benchmark.md](docs/sample-benchmark.md).
+
 ## What It Does
 
 Give RAG Forge a directory of `.txt` or `.md` documents and a CSV of question/answer
