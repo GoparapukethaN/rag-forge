@@ -25,28 +25,30 @@ Result:
 
 - Configurations tested: `24`
 - Best hit rate: `0.650`
-- Best MRR: `0.600`
+- Best MRR: `0.617`
 - Report artifacts: `results.md`, `results.json`, `pareto.png`
 - Regression gate artifact: [sample-regression-gate.md](sample-regression-gate.md)
 
 Recommendation from the generated report:
 
 ```text
-Use recursive_512|bge-small|dense|none as the current default candidate.
-It has the highest hit rate (0.650) and MRR (0.600) in this run.
+Use semantic|e5-small|hybrid|none as the current default candidate.
+It has the highest hit rate (0.650) and MRR (0.617) in this run.
 ```
 
 Top configurations from the latest local run:
 
-| Rank | Chunker | Embedder | Retriever | Reranker | Hit Rate | MRR | Latency |
+| Rank | Chunker | Embedder | Retriever | Reranker | Hit Rate | MRR | Cached Query Latency |
 |---:|---|---|---|---|---:|---:|---:|
-| 1 | recursive_512 | bge-small | dense | none | 0.650 | 0.600 | 14ms |
-| 2 | recursive_512 | e5-small | dense | none | 0.650 | 0.600 | 14ms |
-| 3 | recursive_512 | bge-small | hybrid | none | 0.650 | 0.592 | 14ms |
-| 4 | recursive_512 | e5-small | hybrid | none | 0.650 | 0.562 | 13ms |
-| 5 | fixed_512 | bge-small | hybrid | none | 0.650 | 0.560 | 12ms |
+| 1 | semantic | e5-small | hybrid | none | 0.650 | 0.617 | 13ms |
+| 2 | fixed_512 | e5-small | dense | none | 0.650 | 0.600 | 70ms |
+| 3 | recursive_512 | bge-small | dense | none | 0.650 | 0.600 | 14ms |
+| 4 | recursive_512 | e5-small | dense | none | 0.650 | 0.600 | 14ms |
+| 5 | recursive_512 | e5-small | hybrid | none | 0.650 | 0.600 | 11ms |
 
-Latency is local-machine timing from a smoke run and should be treated as directional.
+Latency is cached query timing from a local smoke run. It excludes corpus loading,
+chunking, corpus embedding, first model download, and report rendering, so it should be
+treated as directional.
 
 The JSON report is intended for follow-up analysis or dashboards. Its top-level shape is:
 
@@ -54,10 +56,10 @@ The JSON report is intended for follow-up analysis or dashboards. Its top-level 
 {
   "configuration_count": 24,
   "recommendation": {
-    "config_id": "recursive_512|bge-small|dense|none",
+    "config_id": "semantic|e5-small|hybrid|none",
     "reason": "highest_hit_rate_then_mrr",
     "hit_rate": 0.65,
-    "mrr": 0.6,
+    "mrr": 0.6167,
     "context_precision": 0.13
   },
   "results": []
@@ -66,7 +68,8 @@ The JSON report is intended for follow-up analysis or dashboards. Its top-level 
 
 ## Regression Gate
 
-The same report can be used as a baseline for future benchmark runs:
+The same report can be used for a self-comparison smoke check. In normal use, compare
+the latest accepted `results.json` against a new run:
 
 ```bash
 rag-forge gate \

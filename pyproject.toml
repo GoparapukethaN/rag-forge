@@ -21,17 +21,11 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
-    "chromadb>=0.4.22",
     "sentence-transformers>=2.2.2",
     "rank-bm25>=0.2.2",
-    "ragas>=0.1.7",
-    "langchain>=0.1.0",
-    "langchain-community>=0.0.10",
-    "langchain-openai>=0.0.5",
     "typer>=0.9.0",
     "rich>=13.0.0",
     "matplotlib>=3.8.0",
-    "pandas>=2.1.0",
     "numpy>=1.24.0",
 ]
 
@@ -43,6 +37,11 @@ dev = [
 ]
 openai = [
     "openai>=1.0.0",
+]
+ragas = [
+    "datasets>=2.16.0",
+    "ragas>=0.1.7",
+    "langchain-openai>=0.0.5",
 ]
 
 [project.scripts]

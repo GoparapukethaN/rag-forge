@@ -6,10 +6,10 @@
 
 | Field | Baseline | Current |
 |---|---:|---:|
-| Config | `recursive_512|bge-small|dense|none` | `recursive_512|bge-small|dense|none` |
+| Config | `semantic|e5-small|hybrid|none` | `semantic|e5-small|hybrid|none` |
 | Hit rate | 0.65 | 0.65 |
-| MRR | 0.6 | 0.6 |
-| Latency | 13.6ms | 13.6ms |
+| MRR | 0.617 | 0.617 |
+| Cached query latency | 13ms | 13ms |
 | Configurations | 24 | 24 |
 
 ## Checks

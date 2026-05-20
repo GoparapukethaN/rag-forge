@@ -42,11 +42,19 @@ def bge_embed(texts: list[str]) -> np.ndarray:
 def e5_embed(texts: list[str]) -> np.ndarray:
     """Embed with intfloat/e5-small-v2 (local, 384-dim).
 
-    E5 wants "query: " or "passage: " prefixes. We use "passage: " for indexing
-    and "query: " gets applied at search time in retrieve.py.
+    E5 wants "query: " or "passage: " prefixes. This function is for document
+    chunks, so it uses the passage prefix.
     """
     model = _get_st_model("intfloat/e5-small-v2")
     prefixed = [f"passage: {t}" for t in texts]
+    embeddings = model.encode(prefixed, show_progress_bar=False, normalize_embeddings=True)
+    return np.array(embeddings)
+
+
+def e5_query_embed(texts: list[str]) -> np.ndarray:
+    """Embed E5 queries with the query prefix."""
+    model = _get_st_model("intfloat/e5-small-v2")
+    prefixed = [f"query: {t}" for t in texts]
     embeddings = model.encode(prefixed, show_progress_bar=False, normalize_embeddings=True)
     return np.array(embeddings)
 
@@ -63,7 +71,13 @@ def openai_embed(texts: list[str]) -> np.ndarray:
             "OPENAI_API_KEY not set. Either set it or use bge/e5 embedders instead."
         )
 
-    from openai import OpenAI
+    try:
+        from openai import OpenAI
+    except ImportError as exc:
+        raise RuntimeError(
+            "OpenAI embeddings require the optional dependency group. "
+            'Install with `pip install -e ".[openai]"`.'
+        ) from exc
 
     client = OpenAI(api_key=api_key)
 
@@ -78,9 +92,9 @@ def openai_embed(texts: list[str]) -> np.ndarray:
     return np.array(all_embeddings)
 
 
-# name -> (embed_fn, dimension, needs_query_prefix)
+# name -> (document_embed_fn, query_embed_fn, dimension)
 EMBEDDERS = {
-    "bge-small": (bge_embed, 384, False),
-    "e5-small": (e5_embed, 384, True),  # needs "query: " prefix at search time
-    "openai": (openai_embed, 1536, False),
+    "bge-small": (bge_embed, bge_embed, 384),
+    "e5-small": (e5_embed, e5_query_embed, 384),
+    "openai": (openai_embed, openai_embed, 1536),
 }

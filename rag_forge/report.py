@@ -14,7 +14,7 @@ def generate_markdown_report(results: list[RunResult], output_path: str | None =
     lines = [
         "# RAG-Forge Benchmark Results\n",
         f"Tested **{len(results)} configurations**\n",
-        "| # | Chunker | Embedder | Retriever | Reranker | Hit Rate | MRR | Latency |",
+        "| # | Chunker | Embedder | Retriever | Reranker | Hit Rate | MRR | Cached Query Latency |",
         "|---|---------|----------|-----------|----------|----------|-----|---------|",
     ]
 
@@ -52,7 +52,7 @@ def generate_markdown_report(results: list[RunResult], output_path: str | None =
             f"- **Hit Rate:** {best.eval.hit_rate:.3f}",
             f"- **MRR:** {best.eval.mrr:.3f}",
             f"- **Context Precision:** {best.eval.context_precision:.3f}",
-            f"- **Avg Latency:** {best.latency_ms:.0f}ms",
+            f"- **Avg Cached Query Latency:** {best.latency_ms:.0f}ms",
             f"- **Chunks:** {best.num_chunks}",
         ])
 

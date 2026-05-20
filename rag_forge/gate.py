@@ -79,7 +79,7 @@ def generate_gate_markdown(gate: dict[str, Any]) -> str:
         f"| Hit rate | {_format_number(baseline['hit_rate'])} | "
         f"{_format_number(current['hit_rate'])} |",
         f"| MRR | {_format_number(baseline['mrr'])} | {_format_number(current['mrr'])} |",
-        f"| Latency | {_format_number(baseline['latency_ms'])}ms | "
+        f"| Cached query latency | {_format_number(baseline['latency_ms'])}ms | "
         f"{_format_number(current['latency_ms'])}ms |",
         f"| Configurations | {baseline['configuration_count']} | "
         f"{current['configuration_count']} |",

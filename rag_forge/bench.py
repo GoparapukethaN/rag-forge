@@ -137,7 +137,7 @@ def run_benchmark(
         chunks = chunk_cache[chunker_name]
         for embedder_name in config.embedders:
             cache_key = f"{chunker_name}|{embedder_name}"
-            embed_fn, dim, _ = EMBEDDERS[embedder_name]
+            embed_fn, _, _ = EMBEDDERS[embedder_name]
             if verbose:
                 print(f"  embedding {len(chunks)} chunks with {embedder_name}...",
                       end=" ", flush=True)
@@ -154,8 +154,7 @@ def run_benchmark(
         chunks = chunk_cache[chunker_name]
         embed_key = f"{chunker_name}|{embedder_name}"
         corpus_embeddings = embedding_cache[embed_key]
-        _, dim, needs_query_prefix = EMBEDDERS[embedder_name]
-        embed_fn = EMBEDDERS[embedder_name][0]
+        _, query_embed_fn, _ = EMBEDDERS[embedder_name]
         rerank_fn = RERANKERS[reranker_name]
 
         if verbose:
@@ -168,9 +167,8 @@ def run_benchmark(
         for query in questions:
             t0 = time.time()
 
-            # embed the query
-            q_prefix = f"query: {query}" if needs_query_prefix else query
-            query_emb = embed_fn([q_prefix])[0]
+            # embed the query with the embedder-specific query path
+            query_emb = query_embed_fn([query])[0]
 
             # retrieve
             if retriever_name == "dense":

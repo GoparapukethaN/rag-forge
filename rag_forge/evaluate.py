@@ -1,12 +1,13 @@
-"""Evaluation using RAGAS metrics.
+"""Retrieval evaluation helpers.
 
-We measure three things:
-  1. context_precision — did we retrieve the right chunks?
-  2. answer_relevancy — is the generated answer relevant to the question?
-  3. faithfulness — is the answer grounded in the retrieved context?
+The default CLI path is intentionally retrieval-only:
 
-For benchmarking retrieval (no generation), we focus on context_precision and
-use a simulated answer from the ground truth.
+1. context_precision — how many retrieved chunks include the expected answer?
+2. hit rate — did at least one retrieved chunk contain the expected answer?
+3. MRR — how early did the expected answer appear?
+
+The optional RAGAS helper is available for later generated-answer evaluation, but it is
+not part of the default benchmark run.
 """
 
 from __future__ import annotations
@@ -96,9 +97,15 @@ def evaluate_with_ragas(
             "Use evaluate_retrieval() for LLM-free evaluation."
         )
 
-    from datasets import Dataset
-    from ragas import evaluate
-    from ragas.metrics import answer_relevancy, context_precision, faithfulness
+    try:
+        from datasets import Dataset
+        from ragas import evaluate
+        from ragas.metrics import answer_relevancy, context_precision, faithfulness
+    except ImportError as exc:
+        raise RuntimeError(
+            "RAGAS evaluation requires optional dependencies. "
+            'Install with `pip install -e ".[ragas]"`.'
+        ) from exc
 
     # if no generated answers, use ground truth as stand-in
     if answers is None:

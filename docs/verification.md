@@ -12,7 +12,7 @@ PYTHON=.venv/bin/python make verify
 
 Result:
 
-- Tests: 35 passed
+- Tests: 37 passed
 - Ruff: clean
 
 ## Keyless Sample Benchmark
@@ -34,10 +34,10 @@ Scope:
 
 Result:
 
-- Best configuration: `recursive_512|bge-small|dense|none`
+- Best configuration: `semantic|e5-small|hybrid|none`
 - Best hit rate: `0.650`
-- Best MRR: `0.600`
-- Recommendation latency on this run: `13.6ms`
+- Best MRR: `0.617`
+- Cached recommendation query latency on this run: `13.0ms`
 - Artifacts generated: `results.md`, `results.json`, `pareto.png`
 
 ## Regression Gate
@@ -59,6 +59,7 @@ Result:
 - Maximum allowed MRR drop: `0.02`
 - Maximum allowed latency increase: `25%`
 
-This is a local proof artifact. The sample corpus is intentionally small, so the
-numbers should be read as smoke-test evidence for the runner and gate rather than a
-general retrieval benchmark.
+This is a local proof artifact. The sample corpus is intentionally small, and latency
+excludes corpus loading, chunking, corpus embedding, first model download, and report
+rendering. The numbers should be read as smoke-test evidence for the runner and gate
+rather than a general retrieval benchmark.

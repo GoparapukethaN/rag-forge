@@ -140,7 +140,7 @@ def _print_results_table(results):
     table.add_column("Reranker")
     table.add_column("Hit Rate", justify="right")
     table.add_column("MRR", justify="right")
-    table.add_column("Latency", justify="right")
+    table.add_column("Query Latency", justify="right")
 
     for i, r in enumerate(results, 1):
         table.add_row(

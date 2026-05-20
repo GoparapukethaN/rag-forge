@@ -10,14 +10,14 @@ few manual questions, then catch quality drops before a retrieval change ships.
 ## Sample Result
 
 The included keyless smoke benchmark runs 24 retrieval configurations over a small
-MLOps/RAG document set. In the latest local run, recursive chunking with local BGE
-embeddings and dense retrieval was the best default candidate for this corpus.
+MLOps/RAG document set. In the latest local run, semantic-style chunking with local E5
+embeddings and hybrid retrieval was the best default candidate for this corpus.
 
-| Candidate | Hit Rate | MRR | Local Latency |
+| Candidate | Hit Rate | MRR | Cached Query Latency |
 |---|---:|---:|---:|
+| `semantic|e5-small|hybrid|none` | 0.650 | 0.617 | 13ms |
+| `fixed_512|e5-small|dense|none` | 0.650 | 0.600 | 70ms |
 | `recursive_512|bge-small|dense|none` | 0.650 | 0.600 | 14ms |
-| `recursive_512|e5-small|dense|none` | 0.650 | 0.600 | 14ms |
-| `recursive_512|bge-small|hybrid|none` | 0.650 | 0.592 | 14ms |
 
 ![Sample Pareto plot](docs/assets/sample-pareto.png)
 
@@ -37,7 +37,7 @@ pairs. It builds a retrieval benchmark across combinations of:
 - **Reranking:** cross-encoder reranking or no reranker
 
 For each configuration it records hit rate, MRR, context precision, chunk count, and
-average retrieval latency, then writes Markdown and JSON reports plus an optional Pareto
+cached query latency, then writes Markdown and JSON reports plus an optional Pareto
 plot.
 
 The regression gate compares two `results.json` files and exits nonzero if the current
@@ -54,17 +54,18 @@ python -m venv .venv
 . .venv/bin/activate
 pip install -e ".[dev]"
 
-rag-forge run --docs ./data/sample --qa ./data/sample/qa.csv --skip-openai
+rag-forge run --docs ./data/sample --qa ./data/sample/qa.csv --skip-openai --skip-reranker
 ```
 
-The local embedding models download on first use. Use `--skip-openai` to keep the run
-keyless.
+The local embedding models download on first use. Use `--skip-openai --skip-reranker`
+for the keyless smoke path shown in the sample report. Install `.[openai]` before using
+OpenAI embeddings and `.[ragas]` before calling the optional RAGAS helper.
 
 ## CLI Reference
 
 ```bash
 # run the included sample benchmark
-rag-forge run --docs ./data/sample --qa ./data/sample/qa.csv --skip-openai
+rag-forge run --docs ./data/sample --qa ./data/sample/qa.csv --skip-openai --skip-reranker
 
 # skip reranking for a faster run
 rag-forge run --docs ./data/sample --qa ./data/sample/qa.csv \
@@ -104,7 +105,7 @@ pip install -e ".[dev]"
 make verify
 ```
 
-Last local verification (2026-05-20): `35 passed` and `ruff` clean.
+Last local verification (2026-05-20): `37 passed` and `ruff` clean.
 Latest local verification details: [docs/verification.md](docs/verification.md).
 
 For the included keyless sample benchmark:
@@ -114,11 +115,13 @@ PYTHON=.venv/bin/python ./scripts/run-sample-benchmark.sh /tmp/rag-forge-sample-
 ```
 
 Sample smoke result from 2026-05-20: 24 configurations tested, best hit rate `0.650`,
-best MRR `0.600`, and both `results.md` and `results.json` generated. See
+best MRR `0.617`, and both `results.md` and `results.json` generated. See
 [docs/sample-benchmark.md](docs/sample-benchmark.md) for the exact command, scope, and
 top configurations.
 
-The sample regression gate compares the smoke run to the current baseline:
+The sample regression gate below is a self-comparison smoke check. In normal use,
+`--baseline` points to the last accepted `results.json` and `--current` points to the
+new run:
 
 ```bash
 rag-forge gate \

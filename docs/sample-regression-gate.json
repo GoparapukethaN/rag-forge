@@ -7,19 +7,19 @@
   },
   "baseline": {
     "configuration_count": 24,
-    "config_id": "recursive_512|bge-small|dense|none",
+    "config_id": "semantic|e5-small|hybrid|none",
     "hit_rate": 0.65,
-    "mrr": 0.6,
+    "mrr": 0.6167,
     "context_precision": 0.13,
-    "latency_ms": 13.6
+    "latency_ms": 13.0
   },
   "current": {
     "configuration_count": 24,
-    "config_id": "recursive_512|bge-small|dense|none",
+    "config_id": "semantic|e5-small|hybrid|none",
     "hit_rate": 0.65,
-    "mrr": 0.6,
+    "mrr": 0.6167,
     "context_precision": 0.13,
-    "latency_ms": 13.6
+    "latency_ms": 13.0
   },
   "checks": [
     {
@@ -35,24 +35,24 @@
       "status": "pass",
       "observed": 0.0,
       "threshold": 0.02,
-      "baseline": 0.6,
-      "current": 0.6
+      "baseline": 0.6167,
+      "current": 0.6167
     },
     {
       "name": "latency_increase_pct",
       "status": "pass",
       "observed": 0.0,
       "threshold": 25.0,
-      "baseline": 13.6,
-      "current": 13.6
+      "baseline": 13.0,
+      "current": 13.0
     },
     {
       "name": "recommendation_changed",
       "status": "pass",
       "observed": false,
       "threshold": "same recommended config",
-      "baseline": "recursive_512|bge-small|dense|none",
-      "current": "recursive_512|bge-small|dense|none"
+      "baseline": "semantic|e5-small|hybrid|none",
+      "current": "semantic|e5-small|hybrid|none"
     },
     {
       "name": "configuration_count_changed",
