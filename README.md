@@ -72,7 +72,7 @@ pip install -e ".[dev]"
 make verify
 ```
 
-Current local verification: `28 passed` and `ruff` clean.
+Last local verification (2026-05-20): `28 passed` and `ruff` clean.
 
 For the included keyless sample benchmark:
 
@@ -80,9 +80,9 @@ For the included keyless sample benchmark:
 PYTHON=.venv/bin/python ./scripts/run-sample-benchmark.sh /tmp/rag-forge-sample-smoke
 ```
 
-Latest sample smoke result: 24 configurations tested, best hit rate `0.650`, best MRR
-`0.600`. See [docs/sample-benchmark.md](docs/sample-benchmark.md) for the exact command,
-scope, and top configurations.
+Sample smoke result from 2026-05-20: 24 configurations tested, best hit rate `0.650`,
+best MRR `0.600`. See [docs/sample-benchmark.md](docs/sample-benchmark.md) for the
+exact command, scope, and top configurations.
 
 ## How It Works
 
