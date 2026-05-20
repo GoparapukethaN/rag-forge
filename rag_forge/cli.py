@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.table import Table
 
 from rag_forge.bench import BenchConfig, load_documents, load_qa_pairs, run_benchmark
-from rag_forge.report import generate_markdown_report, generate_pareto_plot
+from rag_forge.report import generate_json_report, generate_markdown_report, generate_pareto_plot
 
 app = typer.Typer(help="rag-forge: find the best RAG config for your documents.")
 console = Console()
@@ -53,6 +53,10 @@ def run(
     report_path = out_dir / "results.md"
     generate_markdown_report(results, str(report_path))
     console.print(f"\n[green]✓[/green] Report saved to {report_path}")
+
+    json_path = out_dir / "results.json"
+    generate_json_report(results, str(json_path))
+    console.print(f"[green]✓[/green] JSON report saved to {json_path}")
 
     try:
         plot_path = out_dir / "pareto.png"

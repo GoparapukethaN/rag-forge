@@ -1,6 +1,6 @@
 # RAG Forge
 
-RAG Forge is a small benchmark runner for comparing retrieval pipeline choices:
+RAG Forge is a local benchmark runner for comparing retrieval pipeline choices:
 chunking strategy, embedding model, retrieval method, and optional reranking.
 
 The goal is simple: make RAG configuration changes measurable instead of guessing from a
@@ -16,8 +16,9 @@ pairs. It builds a retrieval benchmark across combinations of:
 - **Retrieval:** dense, BM25, and hybrid retrieval
 - **Reranking:** cross-encoder reranking or no reranker
 
-For each configuration it records hit rate, MRR, context precision, and average retrieval
-latency, then writes a Markdown report and optional Pareto plot.
+For each configuration it records hit rate, MRR, context precision, chunk count, and
+average retrieval latency, then writes Markdown and JSON reports plus an optional Pareto
+plot.
 
 ## Quick Start
 
@@ -72,7 +73,7 @@ pip install -e ".[dev]"
 make verify
 ```
 
-Last local verification (2026-05-20): `28 passed` and `ruff` clean.
+Last local verification (2026-05-20): `30 passed` and `ruff` clean.
 
 For the included keyless sample benchmark:
 
@@ -81,8 +82,9 @@ PYTHON=.venv/bin/python ./scripts/run-sample-benchmark.sh /tmp/rag-forge-sample-
 ```
 
 Sample smoke result from 2026-05-20: 24 configurations tested, best hit rate `0.650`,
-best MRR `0.600`. See [docs/sample-benchmark.md](docs/sample-benchmark.md) for the
-exact command, scope, and top configurations.
+best MRR `0.600`, and both `results.md` and `results.json` generated. See
+[docs/sample-benchmark.md](docs/sample-benchmark.md) for the exact command, scope, and
+top configurations.
 
 ## How It Works
 
@@ -92,7 +94,7 @@ exact command, scope, and top configurations.
 4. Run dense, sparse, or hybrid retrieval for every question.
 5. Optionally rerank the retrieved chunks.
 6. Score retrieval against the expected answer text.
-7. Rank configurations and generate a report.
+7. Rank configurations and generate Markdown/JSON reports.
 
 Embedding work is cached within a benchmark run so retrieval methods and rerankers can
 reuse the same chunk embeddings.

@@ -11,7 +11,7 @@ PYTHON=.venv/bin/python ./scripts/run-sample-benchmark.sh /tmp/rag-forge-sample-
 
 ## Latest Local Run
 
-Date: 2026-05-19
+Date: 2026-05-20
 
 Input:
 
@@ -26,15 +26,39 @@ Result:
 - Configurations tested: `24`
 - Best hit rate: `0.650`
 - Best MRR: `0.600`
+- Report artifacts: `results.md`, `results.json`, `pareto.png`
+
+Recommendation from the generated report:
+
+```text
+Use recursive_512|bge-small|dense|none as the current default candidate.
+It has the highest hit rate (0.650) and MRR (0.600) in this run.
+```
 
 Top configurations from the latest local run:
 
 | Rank | Chunker | Embedder | Retriever | Reranker | Hit Rate | MRR | Latency |
 |---:|---|---|---|---|---:|---:|---:|
 | 1 | recursive_512 | bge-small | dense | none | 0.650 | 0.600 | 11ms |
-| 2 | recursive_512 | e5-small | dense | none | 0.650 | 0.600 | 11ms |
+| 2 | recursive_512 | e5-small | dense | none | 0.650 | 0.600 | 12ms |
 | 3 | recursive_512 | bge-small | hybrid | none | 0.650 | 0.592 | 11ms |
-| 4 | recursive_512 | e5-small | hybrid | none | 0.650 | 0.562 | 11ms |
-| 5 | fixed_512 | bge-small | hybrid | none | 0.650 | 0.560 | 12ms |
+| 4 | recursive_512 | e5-small | hybrid | none | 0.650 | 0.562 | 12ms |
+| 5 | fixed_512 | bge-small | hybrid | none | 0.650 | 0.560 | 13ms |
 
 Latency is local-machine timing from a smoke run and should be treated as directional.
+
+The JSON report is intended for follow-up analysis or dashboards. Its top-level shape is:
+
+```json
+{
+  "configuration_count": 24,
+  "recommendation": {
+    "config_id": "recursive_512|bge-small|dense|none",
+    "reason": "highest_hit_rate_then_mrr",
+    "hit_rate": 0.65,
+    "mrr": 0.6,
+    "context_precision": 0.13
+  },
+  "results": []
+}
+```
