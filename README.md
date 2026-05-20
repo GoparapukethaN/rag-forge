@@ -15,9 +15,9 @@ embeddings and dense retrieval was the best default candidate for this corpus.
 
 | Candidate | Hit Rate | MRR | Local Latency |
 |---|---:|---:|---:|
-| `recursive_512|bge-small|dense|none` | 0.650 | 0.600 | 11ms |
-| `recursive_512|e5-small|dense|none` | 0.650 | 0.600 | 12ms |
-| `recursive_512|bge-small|hybrid|none` | 0.650 | 0.592 | 11ms |
+| `recursive_512|bge-small|dense|none` | 0.650 | 0.600 | 14ms |
+| `recursive_512|e5-small|dense|none` | 0.650 | 0.600 | 14ms |
+| `recursive_512|bge-small|hybrid|none` | 0.650 | 0.592 | 14ms |
 
 ![Sample Pareto plot](docs/assets/sample-pareto.png)
 
@@ -105,6 +105,7 @@ make verify
 ```
 
 Last local verification (2026-05-20): `35 passed` and `ruff` clean.
+Latest local verification details: [docs/verification.md](docs/verification.md).
 
 For the included keyless sample benchmark:
 

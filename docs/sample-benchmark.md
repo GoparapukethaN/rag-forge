@@ -40,11 +40,11 @@ Top configurations from the latest local run:
 
 | Rank | Chunker | Embedder | Retriever | Reranker | Hit Rate | MRR | Latency |
 |---:|---|---|---|---|---:|---:|---:|
-| 1 | recursive_512 | bge-small | dense | none | 0.650 | 0.600 | 11ms |
-| 2 | recursive_512 | e5-small | dense | none | 0.650 | 0.600 | 12ms |
-| 3 | recursive_512 | bge-small | hybrid | none | 0.650 | 0.592 | 11ms |
-| 4 | recursive_512 | e5-small | hybrid | none | 0.650 | 0.562 | 12ms |
-| 5 | fixed_512 | bge-small | hybrid | none | 0.650 | 0.560 | 13ms |
+| 1 | recursive_512 | bge-small | dense | none | 0.650 | 0.600 | 14ms |
+| 2 | recursive_512 | e5-small | dense | none | 0.650 | 0.600 | 14ms |
+| 3 | recursive_512 | bge-small | hybrid | none | 0.650 | 0.592 | 14ms |
+| 4 | recursive_512 | e5-small | hybrid | none | 0.650 | 0.562 | 13ms |
+| 5 | fixed_512 | bge-small | hybrid | none | 0.650 | 0.560 | 12ms |
 
 Latency is local-machine timing from a smoke run and should be treated as directional.
 

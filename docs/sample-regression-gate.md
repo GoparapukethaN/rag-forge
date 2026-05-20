@@ -9,7 +9,7 @@
 | Config | `recursive_512|bge-small|dense|none` | `recursive_512|bge-small|dense|none` |
 | Hit rate | 0.65 | 0.65 |
 | MRR | 0.6 | 0.6 |
-| Latency | 10.7ms | 10.7ms |
+| Latency | 13.6ms | 13.6ms |
 | Configurations | 24 | 24 |
 
 ## Checks

@@ -11,7 +11,7 @@
     "hit_rate": 0.65,
     "mrr": 0.6,
     "context_precision": 0.13,
-    "latency_ms": 10.7
+    "latency_ms": 13.6
   },
   "current": {
     "configuration_count": 24,
@@ -19,7 +19,7 @@
     "hit_rate": 0.65,
     "mrr": 0.6,
     "context_precision": 0.13,
-    "latency_ms": 10.7
+    "latency_ms": 13.6
   },
   "checks": [
     {
@@ -43,8 +43,8 @@
       "status": "pass",
       "observed": 0.0,
       "threshold": 25.0,
-      "baseline": 10.7,
-      "current": 10.7
+      "baseline": 13.6,
+      "current": 13.6
     },
     {
       "name": "recommendation_changed",
