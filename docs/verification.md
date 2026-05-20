@@ -59,6 +59,21 @@ Result:
 - Maximum allowed MRR drop: `0.02`
 - Maximum allowed latency increase: `25%`
 
+## Combined Sample Check
+
+Command:
+
+```bash
+PYTHON=.venv/bin/python make sample-check
+```
+
+Current combined sample check from 2026-05-20:
+
+- 24 retrieval configurations completed
+- `results.md`, `results.json`, and `pareto.png` were written
+- self-comparison regression gate returned `pass`
+- `gate.md` and `gate.json` were written
+
 This is a local proof artifact. The sample corpus is intentionally small, and latency
 excludes corpus loading, chunking, corpus embedding, first model download, and report
 rendering. The numbers should be read as smoke-test evidence for the runner and gate

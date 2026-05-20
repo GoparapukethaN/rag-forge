@@ -119,6 +119,12 @@ best MRR `0.617`, and both `results.md` and `results.json` generated. See
 [docs/sample-benchmark.md](docs/sample-benchmark.md) for the exact command, scope, and
 top configurations.
 
+To rerun the sample benchmark and self-comparison gate together:
+
+```bash
+PYTHON=.venv/bin/python make sample-check
+```
+
 The sample regression gate below is a self-comparison smoke check. In normal use,
 `--baseline` points to the last accepted `results.json` and `--current` points to the
 new run:

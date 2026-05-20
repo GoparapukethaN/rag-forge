@@ -1,4 +1,4 @@
-.PHONY: verify test lint benchmark-sample
+.PHONY: verify test lint benchmark-sample sample-check
 
 PYTHON ?= python
 
@@ -12,3 +12,6 @@ lint:
 
 benchmark-sample:
 	./scripts/run-sample-benchmark.sh
+
+sample-check:
+	./scripts/verify-sample.sh
