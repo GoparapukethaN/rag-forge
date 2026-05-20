@@ -1,4 +1,4 @@
-"""CLI for rag-forge. Two commands: run and report."""
+"""CLI for rag-forge."""
 
 from __future__ import annotations
 
@@ -9,6 +9,13 @@ from rich.console import Console
 from rich.table import Table
 
 from rag_forge.bench import BenchConfig, load_documents, load_qa_pairs, run_benchmark
+from rag_forge.gate import (
+    GateThresholds,
+    evaluate_regression_gate,
+    load_json_report,
+    write_gate_json,
+    write_gate_markdown,
+)
 from rag_forge.report import generate_json_report, generate_markdown_report, generate_pareto_plot
 
 app = typer.Typer(help="rag-forge: find the best RAG config for your documents.")
@@ -80,6 +87,48 @@ def report(
         console.print(f"[red]Error:[/red] {results_file} not found. Run `rag-forge run` first.")
         raise typer.Exit(1)
     console.print(path.read_text())
+
+
+@app.command()
+def gate(
+    baseline: str = typer.Option(..., help="Baseline results.json file"),
+    current: str = typer.Option(..., help="Current results.json file"),
+    output: str = typer.Option("./results/gate.json", help="Path for machine-readable gate output"),
+    markdown: str = typer.Option("./results/gate.md", help="Path for Markdown gate summary"),
+    max_hit_rate_drop: float = typer.Option(0.02, help="Maximum allowed hit rate drop"),
+    max_mrr_drop: float = typer.Option(0.02, help="Maximum allowed MRR drop"),
+    max_latency_increase_pct: float = typer.Option(
+        25.0,
+        help="Maximum allowed latency increase percentage",
+    ),
+):
+    """Compare two benchmark reports and fail when retrieval quality regresses."""
+    baseline_report = load_json_report(baseline)
+    current_report = load_json_report(current)
+    gate_report = evaluate_regression_gate(
+        baseline_report,
+        current_report,
+        thresholds=GateThresholds(
+            max_hit_rate_drop=max_hit_rate_drop,
+            max_mrr_drop=max_mrr_drop,
+            max_latency_increase_pct=max_latency_increase_pct,
+        ),
+    )
+    write_gate_json(gate_report, output)
+    write_gate_markdown(gate_report, markdown)
+
+    verdict = gate_report["verdict"]
+    if verdict == "fail":
+        console.print(
+            f"[red]Regression gate failed[/red]. Reports saved to {output} and {markdown}."
+        )
+        raise typer.Exit(1)
+    if verdict == "warn":
+        console.print(
+            f"[yellow]Regression gate passed with warnings[/yellow]. Reports saved to {output}."
+        )
+        return
+    console.print(f"[green]Regression gate passed[/green]. Reports saved to {output}.")
 
 
 def _print_results_table(results):

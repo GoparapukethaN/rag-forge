@@ -1,10 +1,11 @@
 # RAG Forge
 
-RAG Forge is a local benchmark runner for comparing retrieval pipeline choices:
-chunking strategy, embedding model, retrieval method, and optional reranking.
+RAG Forge is a local benchmark runner and regression gate for comparing retrieval
+pipeline choices: chunking strategy, embedding model, retrieval method, and optional
+reranking.
 
 The goal is simple: make RAG configuration changes measurable instead of guessing from a
-few manual questions.
+few manual questions, then catch quality drops before a retrieval change ships.
 
 ## Sample Result
 
@@ -22,7 +23,8 @@ embeddings and dense retrieval was the best default candidate for this corpus.
 
 The sample is intentionally small, so the numbers are a smoke-test artifact rather than
 a universal benchmark. The full run details are in
-[docs/sample-benchmark.md](docs/sample-benchmark.md).
+[docs/sample-benchmark.md](docs/sample-benchmark.md), and the matching gate artifact is
+in [docs/sample-regression-gate.md](docs/sample-regression-gate.md).
 
 ## What It Does
 
@@ -37,6 +39,10 @@ pairs. It builds a retrieval benchmark across combinations of:
 For each configuration it records hit rate, MRR, context precision, chunk count, and
 average retrieval latency, then writes Markdown and JSON reports plus an optional Pareto
 plot.
+
+The regression gate compares two `results.json` files and exits nonzero if the current
+run exceeds the allowed hit-rate, MRR, or latency regression thresholds. It also warns
+when the recommended configuration or benchmark grid changes.
 
 ## Quick Start
 
@@ -67,6 +73,13 @@ rag-forge run --docs ./data/sample --qa ./data/sample/qa.csv \
 
 # custom output directory and retrieval depth
 rag-forge run --docs ./my_docs --qa ./my_qa.csv --output ./my_results --top-k 10
+
+# compare a new benchmark run against a baseline
+rag-forge gate \
+  --baseline ./baseline/results.json \
+  --current ./results/results.json \
+  --output ./results/gate.json \
+  --markdown ./results/gate.md
 ```
 
 ## QA File Format
@@ -91,7 +104,7 @@ pip install -e ".[dev]"
 make verify
 ```
 
-Last local verification (2026-05-20): `30 passed` and `ruff` clean.
+Last local verification (2026-05-20): `35 passed` and `ruff` clean.
 
 For the included keyless sample benchmark:
 
@@ -104,6 +117,20 @@ best MRR `0.600`, and both `results.md` and `results.json` generated. See
 [docs/sample-benchmark.md](docs/sample-benchmark.md) for the exact command, scope, and
 top configurations.
 
+The sample regression gate compares the smoke run to the current baseline:
+
+```bash
+rag-forge gate \
+  --baseline /tmp/rag-forge-sample-smoke/results.json \
+  --current /tmp/rag-forge-sample-smoke/results.json \
+  --output docs/sample-regression-gate.json \
+  --markdown docs/sample-regression-gate.md
+```
+
+Sample gate result from 2026-05-20: `pass`, with `0.02` maximum hit-rate drop, `0.02`
+maximum MRR drop, and `25%` maximum latency increase. See
+[docs/sample-regression-gate.md](docs/sample-regression-gate.md).
+
 ## How It Works
 
 1. Load documents and QA pairs.
@@ -113,6 +140,7 @@ top configurations.
 5. Optionally rerank the retrieved chunks.
 6. Score retrieval against the expected answer text.
 7. Rank configurations and generate Markdown/JSON reports.
+8. Compare current and baseline reports with the regression gate.
 
 Embedding work is cached within a benchmark run so retrieval methods and rerankers can
 reuse the same chunk embeddings.

@@ -1,0 +1,66 @@
+{
+  "verdict": "pass",
+  "thresholds": {
+    "max_hit_rate_drop": 0.02,
+    "max_mrr_drop": 0.02,
+    "max_latency_increase_pct": 25.0
+  },
+  "baseline": {
+    "configuration_count": 24,
+    "config_id": "recursive_512|bge-small|dense|none",
+    "hit_rate": 0.65,
+    "mrr": 0.6,
+    "context_precision": 0.13,
+    "latency_ms": 10.7
+  },
+  "current": {
+    "configuration_count": 24,
+    "config_id": "recursive_512|bge-small|dense|none",
+    "hit_rate": 0.65,
+    "mrr": 0.6,
+    "context_precision": 0.13,
+    "latency_ms": 10.7
+  },
+  "checks": [
+    {
+      "name": "hit_rate_drop",
+      "status": "pass",
+      "observed": 0.0,
+      "threshold": 0.02,
+      "baseline": 0.65,
+      "current": 0.65
+    },
+    {
+      "name": "mrr_drop",
+      "status": "pass",
+      "observed": 0.0,
+      "threshold": 0.02,
+      "baseline": 0.6,
+      "current": 0.6
+    },
+    {
+      "name": "latency_increase_pct",
+      "status": "pass",
+      "observed": 0.0,
+      "threshold": 25.0,
+      "baseline": 10.7,
+      "current": 10.7
+    },
+    {
+      "name": "recommendation_changed",
+      "status": "pass",
+      "observed": false,
+      "threshold": "same recommended config",
+      "baseline": "recursive_512|bge-small|dense|none",
+      "current": "recursive_512|bge-small|dense|none"
+    },
+    {
+      "name": "configuration_count_changed",
+      "status": "pass",
+      "observed": 0,
+      "threshold": 0,
+      "baseline": 24,
+      "current": 24
+    }
+  ]
+}

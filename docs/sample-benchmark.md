@@ -27,6 +27,7 @@ Result:
 - Best hit rate: `0.650`
 - Best MRR: `0.600`
 - Report artifacts: `results.md`, `results.json`, `pareto.png`
+- Regression gate artifact: [sample-regression-gate.md](sample-regression-gate.md)
 
 Recommendation from the generated report:
 
@@ -62,3 +63,19 @@ The JSON report is intended for follow-up analysis or dashboards. Its top-level 
   "results": []
 }
 ```
+
+## Regression Gate
+
+The same report can be used as a baseline for future benchmark runs:
+
+```bash
+rag-forge gate \
+  --baseline /tmp/rag-forge-sample-smoke/results.json \
+  --current /tmp/rag-forge-sample-smoke/results.json \
+  --output docs/sample-regression-gate.json \
+  --markdown docs/sample-regression-gate.md
+```
+
+The gate fails on quality regressions beyond the configured hit-rate or MRR thresholds,
+fails on large latency increases, and warns when the winning retrieval configuration or
+benchmark grid changes.
